@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>What's Today's Outfit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&family=Averia+Libre&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Averia Serif Libre", serif;
+            background: white;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #5c4613;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: clamp(20px, 15vw, 180px);
+            width: 100%;
+            box-shadow: none;
+            z-index: 100;
+        }
+
+        nav a {
+            font-size: 15px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 3px;
+            left: 30px;
+            z-index: 10;
+        }
+
+        .logo {
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 50px;
+            /* Adjust size as needed */
+            width: auto;
+            display: block;
+        }
+
+        /* HERO SECTION with VIDEO */
+        .hero {
+            position: relative;
+            height: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: -1;
+        }
+
+        .hero-content {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+            color: rgb(48, 87, 130);
+        }
+
+        .hero-content h1 {
+            font-size: clamp(30px, 8vw, 70px);
+            line-height: 1.1em;
+            font-weight: 700;
+        }
+
+        .hero-content span {
+            font-size: clamp(40px, 10vw, 90px);
+        }
+
+        .weather-icons {
+            font-size: 40px;
+            margin-top: 10px;
+        }
+
+        /* General Sections */
+        .section {
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .highlight {
+            font-size: 40px;
+            font-weight: 700;
+            color: rgb(149, 180, 237);
+        }
+
+        .subtitle {
+            font-size: 40px;
+            font-weight: 700;
+            color: rgb(48, 86, 131);
+        }
+
+        /* Buttons */
+        .button {
+            display: inline-block;
+            font-size: 22px;
+            font-weight: 700;
+            padding: 12px 26px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: transform 0.1s, background-color 0.1s;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            transition: transform 0.1s, background-color 0.1s;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+            transition: transform 0.1s, background-color 0.1s;
+        }
+
+        .blue-btn {
+            background-color: #315584;
+        }
+
+        .blue-btn:hover {
+            background-color: #ab5b36;
+        }
+
+        /*Recommendation Section*/
+        #recommend {
+            background: #faedd3;
+            padding: 120px 20px;
+        }
+
+        /* Archive Section */
+        #archive {
+            background: #d1d1e4;
+            padding: 120px 20px;
+        }
+
+        /* Mix & Match Section */
+        #mix-match {
+            background: #e8e3df;
+            /* Light warm grey */
+            padding: 120px 20px;
+        }
+
+        .mix-btn {
+            background-color: #5c4613;
+        }
+
+        .mix-btn:hover {
+            background-color: #315584;
+        }
+
+        .brown-btn {
+            background: #ab5b36;
+            border-radius: 50px;
+            padding: 14px 28px;
+        }
+
+        .brown-btn:hover {
+            background-color: #315584;
+        }
+
+        /* Contact Section */
+        footer {
+            background: #e9e3e3;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            font-family: "Inter", sans-serif;
+            font-size: 15px;
+            color: #333;
+            margin: 6px 0;
+        }
+
+        footer a {
+            text-decoration: underline;
+            color: #3366cc;
+        }
+
+        /* Scroll Animation */
+        .hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease-out;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="random-recommend.html">Recommend</a>
+        <a href="mix-match.html">Mix & Match</a>
+        <a href="outfit-archive.html">Archive</a>
+
+    </nav>
+
+    <div class="logo-container">
+        <a href="Home.html" class="logo">
+            <img src="logo.png" alt="WTO Logo">
+        </a>
+    </div>
+
+    <!-- HERO SECTION (Only this has video) -->
+    <div class="hero">
+        <video autoplay muted playsinline preload="auto">
+            <source src="https://framerusercontent.com/assets/I2NwpfKJCePDZTd0qltt7gBoRY.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-content">
+            <h1><span>WTO</span></h1>
+        </div>
+    </div>
+
+    <!-- Get Recommendation Section -->
+    <div class="section" id="recommend">
+        <h2 class="highlight hidden">Get Recommendation</h2>
+        <h2 class="subtitle hidden">By weather</h2>
+        <div class="weather-icons hidden">☀️ 🌧️ ❄️ 💨</div>
+
+        <a class="button blue-btn hidden" href="random-recommend.html">Recommend</a>
+    </div>
+
+    <!-- Mix & Match Section -->
+    <div class="section" id="mix-match">
+        <h2 class="highlight hidden" style="color: #9e8854;">Create Your Own</h2>
+        <h2 class="subtitle hidden" style="color: #5c4613;">Mix & Match</h2>
+        <a class="button mix-btn hidden" href="mix-match.html">Mix & Match</a>
+    </div>
+
+    <!-- Archive Section -->
+    <div class="section" id="archive">
+        <h2 class="subtitle hidden" style="color: rgb(251, 244, 227);">Go Look for</h2>
+        <h2 class="subtitle hidden" style="color: rgb(171, 91, 54);">Outfit Archive</h2>
+        <a class="button brown-btn hidden" href="outfit-archive.html">Archive</a>
+    </div>
+
+    <!-- Contact Section -->
+    <footer id="contact">
+        <p><strong>Contact</strong></p>
+        <p><a href="https://www.instagram.com/srh.gim" target="_blank">Instagram</a></p>
+        <p>gaeun0512@sogang.ac.kr</p>
+        <p>010-9760-0962</p>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                } else {
+                    entry.target.classList.remove('show');
+                }
+            });
+        });
+
+        const hiddenElements = document.querySelectorAll('.hidden');
+        hiddenElements.forEach((el) => observer.observe(el));
+    </script>
+</body>
+
+</html>

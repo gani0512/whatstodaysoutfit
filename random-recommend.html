@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's Today's Outfit? - Recommendation</title>
+
+    <!-- Fonts from Home.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Averia+Libre:wght@400&family=Averia+Sans+Libre:wght@700&family=Averia+Serif+Libre:wght@400;700&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Averia Serif Libre', serif;
+            /* Vertical stripes background approximating the reference */
+            background: url('BG4.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #aaa180;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            /* Simple red top border as a nod to the checking tape */
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #faedd3;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: clamp(20px, 15vw, 180px);
+            width: 100%;
+            /* Remove shadow for a flatter, paper-like look or keep subtle */
+            box-shadow: none;
+            z-index: 100;
+        }
+
+        nav a {
+            font-family: 'Averia Serif Libre', serif;
+            font-weight: 700;
+            color: #756e55;
+            /* Dark text */
+            text-decoration: none;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 3px;
+            left: 30px;
+            z-index: 101;
+        }
+
+        .logo {
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 50px;
+            /* Adjust size as needed */
+            width: auto;
+            display: block;
+        }
+
+        /* Main Content Layout - The "Card" */
+        .main-content {
+            background-color: #faedd3;
+            /* Cream background div */
+            margin: 70px 20px;
+            padding: 30px 40px;
+            border-radius: none;
+            border: none;
+            position: relative;
+            /* For stars */
+
+            /* Center the card */
+            display: flex;
+            flex-direction: column;
+            /* Stack vertically */
+            gap: 20px;
+            align-items: center;
+            justify-content: flex-start;
+
+            width: 60%;
+            /* Flexible width */
+            max-width: 800px;
+            /* Cap width */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styles for inner panels - remove their individual card-looks */
+        .weather-panel {
+            /* No background on this anymore, part of the main card */
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+        }
+
+        .weather-panel h2 {
+            font-family: 'Averia Libre', cursive;
+            font-size: 32px;
+            color: #305782;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .weather-buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            width: 20%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .weather-btn {
+            background-color: #c9d9db;
+            border-radius: 50px;
+            padding: 10px 30px;
+            width: auto;
+            max-width: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .weather-btn:hover {
+            transform: scale(1.05);
+            background-color: #ebeeff;
+        }
+
+        /* Right Panel - Result Display */
+        .display-panel {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            padding: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            /* Ensure space */
+        }
+
+        .result-content {
+            display: none;
+            /* Hidden initially */
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 40px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+            /* Allow wrapping on small screens */
+        }
+
+        .image-card {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #outfit-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            border-radius: 8px;
+            /* Optional: adds nice touch */
+        }
+
+        .outfit-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            font-family: 'Averia Serif Libre', serif;
+            color: #4a4a4a;
+            max-width: 300px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border: 1px dashed #d3a0a0;
+            border-radius: 4px;
+        }
+
+        .outfit-info h3 {
+            font-family: 'Averia Libre', cursive;
+            font-size: 24px;
+            margin: 0;
+            color: #756e55;
+            text-align: center;
+            border-bottom: 2px solid #756e55;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(117, 110, 85, 0.2);
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #888;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: 400;
+            color: #305782;
+            font-style: italic;
+        }
+
+        .placeholder-text {
+            font-family: 'Averia Libre', cursive;
+            font-size: 24px;
+            color: rgb(149, 180, 237);
+            font-weight: 700;
+            text-align: center;
+            margin: auto;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-family: 'Averia Libre', cursive;
+            color: #fff;
+            /* White on the dark stripes might be hard to see, or okay */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+                margin: 20px;
+                padding: 40px 20px;
+            }
+
+            .result-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .image-card {
+                transform: rotate(0deg);
+                margin-bottom: 20px;
+            }
+
+            .outfit-info {
+                text-align: center;
+                align-items: center;
+            }
+
+            .info-item {
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="random-recommend.html">Recommend</a>
+        <a href="mix-match.html">Mix & Match</a>
+        <a href="outfit-archive.html">Archive</a>
+    </nav>
+
+    <div class="logo-container">
+        <a href="Home.html" class="logo">
+            <img src="logo.png" alt="WTO Logo">
+        </a>
+    </div>
+
+    <div class="main-content">
+
+        <!-- Left Panel -->
+        <div class="weather-panel">
+
+            <div class="weather-buttons">
+                <button class="weather-btn" onclick="recommendOutfit('sunny')">☀️</button>
+                <button class="weather-btn" onclick="recommendOutfit('windy')">💨</button>
+                <button class="weather-btn" onclick="recommendOutfit('rainy')">🌧️</button>
+                <button class="weather-btn" onclick="recommendOutfit('winter')">❄️</button>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="display-panel">
+            <p class="placeholder-text" id="placeholder">Select a weather to see random outfit.</p>
+
+            <div id="result-content" class="result-content">
+                <div class="image-card">
+                    <img id="outfit-image" src="" alt="Recommended Outfit">
+                </div>
+                <!-- Outfit Info Space -->
+                <div class="outfit-info">
+                    <h3>Outfit Info</h3>
+                    <div class="info-item">
+                        <span class="info-label">Top</span>
+                        <span class="info-value">Top Info</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Bottom</span>
+                        <span class="info-value">Bottom Info</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Shoes</span>
+                        <span class="info-value">Shoes Info</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Image mapping with detailed info
+        const outfits = {
+            sunny: [
+                { img: 'NM_OF/OF_summer1.png', top: 'White Linen Shirt', bottom: 'Beige Chino Shorts', shoes: 'Leather Sandals' },
+                { img: 'NM_OF/OF_spring1.png', top: 'Pastel Knit Sweater', bottom: 'White Mini Skirt', shoes: 'Mary Janes' },
+                { img: 'NM_OF/OF_spring3.png', top: 'Floral Blouse', bottom: 'Light Wash Jeans', shoes: 'White Sneakers' },
+                { img: 'NM_OF/OF_spring4.png', top: 'Green Cardigan', bottom: 'Cream Trousers', shoes: 'Loafers' }
+            ],
+            rainy: [
+                { img: 'NM_OF/OF_fall1.png', top: 'Striped Long Sleeve', bottom: 'Black Cargo Pants', shoes: 'Rain Boots' },
+                { img: 'NM_OF/OF_fall2.png', top: 'Gray Hoodie', bottom: 'Plaid Trousers', shoes: 'Boots' },
+                { img: 'NM_OF/OF_fall3.png', top: '오뉴이-부클플랫코트', bottom: '오뉴이-가비핀턱벌룬힙스트링팬츠' },
+                { img: 'NM_OF/OF_fall4.png', top: '어텀-텐셀스트랩티셔츠', bottom: '둥실코코-윈터 모직 하이웨스트 숏팬츠', shoes: '어텀-폴딩하프부츠' }
+            ],
+            windy: [
+                { img: 'NM_OF/OF_fall3.png', top: '오뉴이-부클플랫코트', bottom: '오뉴이-가비핀턱벌룬힙스트링팬츠' },
+                { img: 'NM_OF/OF_fall2.png', top: 'Gray Hoodie', bottom: 'Plaid Trousers' },
+                { img: 'NM_OF/OF_fall1.png', top: 'Striped Long Sleeve', bottom: 'Black Cargo Pants', shoes: 'Rain Boots' },
+                { img: 'NM_OF/OF_fall4.png', top: '어텀-텐셀스트랩티셔츠', bottom: '둥실코코-윈터 모직 하이웨스트 숏팬츠', shoes: '어텀-폴딩하프부츠' }
+            ],
+            winter: [
+                { img: 'NM_OF/OF_winter1.png', top: 'Heavy Wool Coat', bottom: 'Corduroy Pants', shoes: 'Insulated Boots' },
+                { img: 'NM_OF/OF_winter2.png', top: 'Puffer Jacket', bottom: 'Fleece-lined Leggings', shoes: 'Snow Boots' },
+                { img: 'NM_OF/OF_winter3.png', top: '오뉴이-베이직오버핏맨투맨', bottom: '오뉴이-사이드핀턱벌룬 팬츠' },
+                { img: 'NM_OF/OF_winter4.png', top: '서울베이스드-ESEENTIAL LIGHT DOWN PADDING', bottom: 'D RING NON FADE DENIM PANTS' }
+            ]
+        };
+
+        function recommendOutfit(weather) {
+            const possibleOutfits = outfits[weather];
+            if (!possibleOutfits || possibleOutfits.length === 0) {
+                alert("No outfits found for this weather!");
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * possibleOutfits.length);
+            const selected = possibleOutfits[randomIndex];
+
+            const imgElement = document.getElementById('outfit-image');
+            const placeholder = document.getElementById('placeholder');
+            const resultContent = document.getElementById('result-content');
+
+            // Update image and info
+            imgElement.src = selected.img;
+
+            const infoValues = document.querySelectorAll('.info-value');
+            infoValues[0].textContent = selected.top;
+            infoValues[1].textContent = selected.bottom;
+            infoValues[2].textContent = selected.shoes;
+
+            resultContent.style.display = 'flex'; // Show the result container
+            placeholder.style.display = 'none';
+        }
+    </script>
+
+</body>
+
+</html>
